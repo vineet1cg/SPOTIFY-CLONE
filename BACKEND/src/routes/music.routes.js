@@ -5,12 +5,18 @@ const router = express.Router();
 const multer = require('multer');
 //api/music/upload
 const upload = multer({
-    storage : multer.memoryStorage() 
+    storage: multer.diskStorage({
+        destination: "uploads/",
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, file.fieldname + '-' + uniqueSuffix + '-' + file.originalname);
+        }
+    })
 });
 
-router.post("/upload",authMiddleware.authArtist,upload.single("music"), musicController.createMusic);
+router.post("/upload", authMiddleware.authArtist, upload.single("music"), musicController.createMusic);
 router.post("/album", authMiddleware.authArtist, musicController.createAlbum);
-router.get("/",authMiddleware.authUser,musicController.getAllMusics);
+router.get("/", authMiddleware.authUser, musicController.getAllMusics);
 router.get("/albums", authMiddleware.authUser, musicController.getAllAlbums);
-router.get("/albums/:albumId",authMiddleware.authUser , musicController.getAlbumById);
+router.get("/albums/:albumId", authMiddleware.authUser, musicController.getAlbumById);
 module.exports = router; 

@@ -2,6 +2,7 @@ const musicModel = require('../models/music.model');
 const jwt = require('jsonwebtoken');
 const albumModel = require('../models/album.model');
 const { uploadFile } = require('../services/storage.service');
+const fs = require('fs');
 
 async function createMusic(req, res) {
   // protection of this api is needed cause not every user is an artist so they should not have access to this site 
@@ -17,8 +18,12 @@ async function createMusic(req, res) {
       return res.status(400).json({ message: "No music file provided" });
     }
 
-    // ImageKit SDK requires base64 string or ReadStream. Passing raw Buffer hangs indefinitely!
-    const result = await uploadFile(file.buffer.toString("base64"));
+    // Read file from disk as a stream to avoid memory exhaustion from base64 strings
+    const fileStream = fs.createReadStream(file.path);
+    const result = await uploadFile(fileStream);
+
+    // Clean up local temp file after upload
+    fs.unlinkSync(file.path);
 
     const music = await musicModel.create({
       uri: result.url,
@@ -36,6 +41,9 @@ async function createMusic(req, res) {
       },
     });
   } catch (e) {
+    if (req.file && req.file.path) {
+      try { fs.unlinkSync(req.file.path); } catch (err) { } // Clean up on error
+    }
     console.error("UPLOAD ERROR:", e);
     res.status(500).json({ message: "Upload failed on the server: " + e.message });
   }

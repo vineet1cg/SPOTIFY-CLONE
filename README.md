@@ -20,7 +20,7 @@ A full-stack music streaming application built with Node.js, Express, MongoDB, a
 | Technology | Purpose |
 |------------|---------|
 | React + Vite | UI Framework & Build tool |
-| Tailwind CSS | Styling |
+| Tailwind CSS v4 | Styling |
 | Zustand | State management |
 | React Router v6 | Client-side routing |
 | Axios | HTTP client |
@@ -39,8 +39,9 @@ A full-stack music streaming application built with Node.js, Express, MongoDB, a
 ### 👤 For Users
 - 🎧 Browse all available music
 - 💿 View and explore albums
-- ▶️ Play music
+- ▶️ Play music with player controls
 - 🔍 Search functionality
+- 📚 Personal library
 
 ### 🎸 For Artists
 - 📤 Upload music files
@@ -63,7 +64,32 @@ SPOTIFY/
 │   │   └── db/             # Database connection
 │   ├── server.js           # Entry point
 │   └── package.json
-├── FRONTEND/              # React app (to be created) 📍
+├── Frontend/               # React + Vite + Tailwind CSS v4 app
+│   ├── src/
+│   │   ├── assets/         # Static assets
+│   │   ├── components/     # React components
+│   │   │   ├── common/     # Button, Input, Loader, ProtectedRoute, AlbumCard, MusicCard
+│   │   │   └── layout/     # Layout, Sidebar, TopBar, PlayerBar
+│   │   ├── pages/          # Page components
+│   │   │   ├── LandingPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── RegisterPage.jsx
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── SearchPage.jsx
+│   │   │   ├── AlbumPage.jsx
+│   │   │   ├── LibraryPage.jsx
+│   │   │   ├── UploadPage.jsx
+│   │   │   └── ArtistAlbumsPage.jsx
+│   │   ├── services/       # API client (axios)
+│   │   ├── stores/         # Zustand state stores (auth, music, player)
+│   │   ├── utils/          # Helper functions
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   └── tailwind.config.js
 └── README.md
 ```
 
@@ -104,11 +130,8 @@ npm run dev
 ### Frontend Setup 🖱️
 
 ```bash
-cd FRONTEND
-npm create vite@latest . -- --template react
-npm install react-router-dom axios zustand lucide-react
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+cd Frontend
+npm install
 npm run dev
 ```
 
@@ -234,7 +257,7 @@ npm run dev
 ## 🎯 Quick Start for Frontend Dev
 
 1. **Run backend first**: `cd BACKEND && npm run dev`
-2. **Create frontend**: `npm create vite@latest frontend -- --template react`
+2. **Run frontend**: `cd Frontend && npm run dev`
 3. **Configure CORS**: Backend uses `cors` middleware (already enabled)
 4. **Use credentials**: Set `axios.defaults.withCredentials = true` for cookie auth
 

@@ -17,8 +17,8 @@ async function createMusic(req, res) {
       return res.status(400).json({ message: "No music file provided" });
     }
 
-    // Use buffer directly to avoid giant base64 strings taking up RAM
-    const result = await uploadFile(file.buffer);
+    // ImageKit SDK requires base64 string or ReadStream. Passing raw Buffer hangs indefinitely!
+    const result = await uploadFile(file.buffer.toString("base64"));
 
     const music = await musicModel.create({
       uri: result.url,

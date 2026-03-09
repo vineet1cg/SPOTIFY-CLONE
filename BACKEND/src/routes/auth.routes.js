@@ -3,10 +3,10 @@ const authController = require('../controllers/auth.controller');
 const router = express.Router();
 
 // url/api/auth/register
-router.post('/register',authController.registerUser);
-router.post('/login',authController.loginUser);
+router.post('/register', authController.registerUser);
+router.post('/login', authController.loginUser);
+router.get('/me', authController.getMe);
 
 //find out about token blacklisting
-router.post('/logout',authController.logoutUser);
+router.post('/logout', authController.logoutUser);
 module.exports = router;
-

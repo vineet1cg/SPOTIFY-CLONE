@@ -8,7 +8,7 @@ connectDB()
 
 
 //cat
-console.log(catMe());
+console.log(catMe('nyan'));
 app.listen(3000,()=>{
     console.log("Backend Running On Port 3000 💀");
 })
